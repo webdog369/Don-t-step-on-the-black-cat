@@ -1,0 +1,173 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body,html{
+    width: 100%;
+    height: 100%;
+}
+/*开始界面*/
+#start{
+    position: absolute;
+    left: 0;
+    bottom:0;
+    width: 100%;
+    height: 100%;
+    background: #fff url("./../images/start.gif") no-repeat center center;
+    background-size:20%;
+    z-index: 999;
+    overflow: hidden;
+}
+#start h1{
+    display: block;
+    width: 100%;
+    height: 500px;
+}
+#start h1 img{
+    position: absolute;
+    width: 80%;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+}
+.start{
+    position: absolute;
+    width: 400px;
+    height: 120px;
+    line-height: 120px;
+    border: 10px solid #000;
+    text-align: center;
+    font-size: 80px;
+    left: 50%;
+    bottom: 300px;
+    transform: translateX(-50%);
+    border-radius: 50px;
+    color: #333333;
+    font-weight: bold;
+}
+#start .help{
+    position: relative;
+    width: 80%;
+    height: 40%;
+    border: 30px double #000;
+    border-radius: 40px;
+    margin: 0 auto;
+    background: url("../images/help2.png") no-repeat center center;
+    background-size: cover;
+    z-index: 1000;
+    display: none;
+}
+#start i{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%,-50%);
+    width:80px;
+    height:80px;
+    background: url("../images/helpBtn.jpg") no-repeat center center;
+    background-size: cover;
+}
+
+/*地图*/
+.map{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255,255,255);
+    overflow: hidden;
+}
+.group{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 25%;
+    transition: all .15s ease-in-out 0ms;
+}
+.groupTwo{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 25%;
+    transition: all .1s ease-in-out 0ms;
+}
+/*方块*/
+.block{
+    width: 25%;
+    height: 100%;
+    border: 1px solid #888;
+    box-sizing: border-box;
+    float: left;
+    transition: background-color .1s ease-in-out 0ms;
+    color: #fff;
+    text-align: center;
+    font-size: 120px;
+}
+/*黑色方块*/
+.bgColor{
+    background: rgb(0, 0, 0);
+}
+/*要点击的第一个黑色方块*/
+.startBtn{
+    background: rgb(0, 0, 0) url("./../images/startBtn.png") no-repeat center center;
+    background-size: 80%;
+}
+/*失误的方块*/
+.miss{
+    background: #fff url("./../images/miss3.gif") no-repeat center center;
+    background-size: 100%;
+}
+
+/*结算界面*/
+#over{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #dff;
+    background-image:url("./../images/over.gif");
+    background-repeat: no-repeat;
+    background-position:center center ;
+    box-shadow: inset 0 0 300px #333333;
+    display: none;
+}
+#over p{
+    display: block;
+    width: 100%;
+    height: 180px;
+    font-size:100px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 300px;
+    color: #fff;
+    text-shadow: 0 0 50px #000;
+}
+#over span{
+    display: block;
+    width: 100%;
+    height: 100px;
+    margin-top: 100px;
+    font-size: 100px;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 50px #000;
+}
+
+#over div{
+    width: 500px;
+    height: 200px;
+    line-height: 200px;
+    font-size: 90px;
+    background: #f60;
+    color: #fff;
+    letter-spacing: 10px;
+    text-align: center;
+    margin: 500px auto;
+    border-radius: 50px;
+    box-shadow: 0 0 80px #000;
+    text-shadow: 0 0 50px lightgoldenrodyellow;
+    border: 10px solid #f80;
+}
