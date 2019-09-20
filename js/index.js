@@ -1,19 +1,22 @@
 $(function () {
-
     //开始游戏
     startGame();
     //绘制五组方块
     let $map = $(".map");
     for (let i = 0 ; i <= 4; i++){
         setBlock($map);
-        ($(".group").eq(4).children(".bgColor")).addClass("startBtn")
     }
     //方块位置初始化
     groupPosition();
 
+    //给要点击的方块设置引导手势
+    ($(".group").eq(3).children(".bgColor")).addClass("startBtn");
+
+    //底部方块组初始化
+    bottomStyle();
+
     //方块点击检测
     checkBlock($map);
-
 });
 
 //开始游戏
@@ -37,6 +40,27 @@ function startGame() {
         $start.slideUp();
         music();
     })
+}
+
+//底部方块组初始化
+function bottomStyle() {
+    //设置随机颜色
+    let max = 100;
+    let min = 0;
+    let rand1 = parseInt(Math.random() * (max - min + 1) + min);
+    let rand2 = parseInt(Math.random() * (max - min + 1) + min);
+    let rand3 = parseInt(Math.random() * (max - min + 1) + min);
+    //边框颜色取反色
+    let invert1 = 255 - rand1;
+    let invert2 = 255 - rand2;
+    let invert3 = 255 - rand3;
+    let $bottomBlock = $(".group").eq(4).children();
+    ($bottomBlock .css("background",`rgb(${rand1},${rand2},${rand3})`));
+    ($bottomBlock .css("borderColor",`rgb(${invert1},${invert2},${invert3})`));
+    ($bottomBlock .eq(0).text("别"));
+    ($bottomBlock .eq(1).text("踩"));
+    ($bottomBlock .eq(2).text("小"));
+    ($bottomBlock .eq(3).text("黑"));
 }
 
 //生成一组方块的方法
@@ -65,9 +89,20 @@ function groupPosition() {
     $group.eq(0).css("bottom","100%");
 }
 
+//点击后更新方块组位置
+function groupPosition2() {
+    let $group = $(".group");
+    $group.eq(5).css("bottom","-25%");
+    $group.eq(4).css("bottom","0%");
+    $group.eq(3).css("bottom","25%");
+    $group.eq(2).css("bottom","50%");
+    $group.eq(1).css("bottom","75%");
+    $group.eq(0).css("bottom","100%");
+}
+
 //游戏音效
 function music() {
-    //找到所有音效 并设置一个0-5的随机数
+    //找到所有音效 并设置一个0-6的随机数
     let max = 6;
     let min = 0;
     let rand = parseInt(Math.random() * (max - min + 1) + min);
@@ -83,45 +118,132 @@ function checkBlock($map) {
     //设置初始分数
     let score = 0;
 
+
+    //设置方块变色备用值
+    let num = 220;
+    let num2 = 0;
+    let num3 = 80;
+    let num4 = 255;
+    let $textItem = $(".textItems");
+
     //利用事件委托给方块添加点击事件
     $("body").on("click",".block",function () {
 
         //方块颜色判定
-        if ($(this).hasClass("bgColor") && $(this).parent().index() === 4 ){
-               //生成新的一组方块 并且初始化位置
+        if ($(this).hasClass("bgColor") && $(this).parent().index() === 3 ){
+               //生成新的一组方块
                 setBlock($map);
-               groupPosition();
-
-                //设置被点击的方块变成灰色时添加盒子阴影 并让其所在的方块组下移25%
-                $(this).css({
-                    backgroundColor:"#ddd",
-                    boxShadow:`inset ${0} ${0} ${200}px #000`
-                });
-                $(this).parent().slideUp(100);
+              // 初始化位置
+               groupPosition2();
 
             //点击事件发生时播放游戏音效
             music();
 
             //加分
             score += 1;
+            //让方块随着分数的增高先变黄再变红后变蓝
+            if(score < 110 ){
+                let $block = $(".group").children(".bgColor");
+                $block.css("background",`rgb(${score*2},${score*2},${0})`);
+                if (score === 50){
+                    $textItem.eq(0).css({
+                        left:"-100%"
+                    });
+                }
+            }
+            else if (score >= 110 && score < 180) {
+                let $block = $(".group").children(".bgColor");
+                num -= 2;
+                $block.css("background",`rgb(${score*2},${num},${0})`);
+                if (score === 150){
+                    $textItem.eq(1).css({
+                        left:"-100%"
+                    });
+                }
+            }
+            else if (score >= 180 && score <= 280) {
+                let $block = $(".group").children(".bgColor");
+                num2 += 2;
+                num3 -= 2;
+                num4 -= 6;
+                $block.css("background",`rgb(${num4},${num3},${num2})`);
+                if (score === 265){
+                    $textItem.eq(3).css("left","33%");
+                    setTimeout(function () {
+                        $textItem.eq(4).css("left","16%");
+                        $textItem.eq(3).slideUp();
+                        setTimeout(function () {
+                            $textItem.eq(4).slideUp();
+                            $textItem.eq(5).css("left","43%");
+                            setTimeout(function () {
+                                $textItem.eq(5).slideUp();
+                                $textItem.eq(6).css("left","28%");
+                                setTimeout(function () {
+                                    $textItem.eq(6).fadeOut();
+                                },8000)
+                            },3000)
+                        },3000)
+                    },4000);
+                }
+            }
+            //如果玩家分数超过280 则会开启彩虹模式
+            else {
+                if (score === 450){
+                    $textItem.eq(7).css("left","23%");
+                    setTimeout(function () {
+                        $textItem.eq(7).fadeOut();
+                        $textItem.eq(8).css("left","35%");
+                        setTimeout(function () {
+                            $textItem.eq(8).fadeOut();
+                            $textItem.eq(9).css("left","40%");
+                            setTimeout(function () {
+                                $textItem.eq(9).fadeOut();
+                                setTimeout(function () {
+                                    $textItem.eq(10).css("left","23%");
+                                    setTimeout(function () {
+                                        $textItem.eq(10).fadeOut();
+                                    },5000)
+                                },5000)
+                            },5000)
+                        },3000)
+                    },4000)
+                }
+                //随机颜色
+                let max = 200;
+                let min = 0;
+                let maxIndex = 1;
+                let minIndex = 3;
+                let randIndex = parseInt(Math.random() * (maxIndex - minIndex + 1) + minIndex);
+                let rand1 = parseInt(Math.random() * (max - min + 1) + min);
+                let rand2 = parseInt(Math.random() * (max - min + 1) + min);
+                let rand3 = parseInt(Math.random() * (max - min + 1) + min);
+                let $randBlock = $(".group").eq(randIndex).children(".bgColor");
+                $randBlock.css("background",`rgb(${rand1},${rand2},${rand3})`);
+            }
 
-            //0.5s后删除刚才点击过的方块(优化性能)
-            let _this = $(this);
+            //设置被点击的方块变成灰色时添加盒子阴影 并让其所在的方块组下移25%
+            $(this).css({
+                backgroundColor:"#ddd",
+                // boxShadow:`inset ${0} ${0} ${200}px #000`
+            });
+
+            //0.5s后删除超出去的方块组(优化性能)
             setTimeout(function () {
-                _this.parent().remove();
+                $(".group").eq(5).remove();
             },500);
 
          return score;
         }
-        //设置无法点击非最后一排的黑色方块(优化用户体验)
-        else if ($(this).hasClass("bgColor") && $(this).parent().index() !== 4){
+        //设置无法点击非第三排的黑色方块和已经点过的方块(优化用户体验)
+        else if (($(this).hasClass("bgColor") && $(this).parent().index() !== 3) || $(this).parent().index() === 4 ){
             return  false;
         }
         else {
-            //若点击了非黑色方块 则方块变为红色
+
+            //若点击了非黑色方块 则出现生气的小黑
             $(this).addClass("miss");
 
-            //给地图加入红色内阴影
+            //给地图加入淡黄色内阴影
             $(".map").css("boxShadow",`inset ${0} ${0} ${300}px lightgoldenrodyellow`);
 
             //播放游戏失误音效
@@ -163,15 +285,27 @@ function restart() {
         let $map = $(".map");
         for (let i = 0 ; i <= 4; i++){
             setBlock($map);
-            ($(".group").eq(4).children(".bgColor")).addClass("startBtn")
         }
-
         //去除地图内阴影
 
         $map.css("boxShadow","none");
 
+        //漂浮文字位置归位
+        let $textItems = $(".textItems");
+        $textItems.hide();
+        $textItems.css("left","100%");
+        setTimeout(function () {
+            $textItems.show();
+        },8000);
+
         //初始化方块位置
         groupPosition();
+
+        //给要点击的方块设置引导手势
+        ($(".group").eq(3).children(".bgColor")).addClass("startBtn");
+
+        //底部方块组初始化
+        bottomStyle();
     })
 }
 

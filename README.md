@@ -8,15 +8,18 @@
 ## 游戏内容展示
 ======================================================
 ####  开始界面
-![image](https://github.com/webdog369/-v1.0/blob/master/ReadmeData/1.png)
-##### 1.游戏帮助
-![image](https://github.com/webdog369/-v1.0/blob/master/ReadmeData/2.png)
-###### 点击
-![image](https://github.com/webdog369/-v1.0/blob/master/ReadmeData/4.png)
-##### 2.开始按钮
-![image](https://github.com/webdog369/-v1.0/blob/master/ReadmeData/3.png) 
+  center ![image](E392D667317B426CACE1D39D8AEAD1C1)
+  ##### 1.游戏帮助
+  center ![image](0F67B7F89F4A40BC833491D76E4C2CAA)
+  ###### 点击
+  center ![image](53C5B1D9F7704CC3A4DA6F570431FEF9)
+  ##### 2.开始按钮
+   center![image](C708C04C9FFA41D1BF5885E2D90B4C87)
+  
 #### 游戏内画面
-![image](https://github.com/webdog369/-v1.0/blob/master/ReadmeData/5.png)
+![image](5E8E9D81D5D9492F9B700C0AA3B8E524)
+
 #### 游戏结算画面
-![image](https://github.com/webdog369/-v1.0/blob/master/ReadmeData/6.png)
+![image](6F9FD7CBF5F34658B6DB1DBA8BE63E03)
+
 ##### 版本号v1.0 持续优化中... 欢迎各位大佬批评指正!
