@@ -5,6 +5,7 @@
 body,html{
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 /*开始界面*/
 #start{
@@ -82,7 +83,7 @@ body,html{
     bottom: 0;
     width: 100%;
     height: 25%;
-    transition: all 0.15s ease-out 0ms;
+    /*transition: bottom .08s ease-in 0ms;*/
 }
 /*方块*/
 .block{
@@ -105,53 +106,101 @@ body,html{
     background: rgb(0, 0, 0) url("./../images/startBtn.png") no-repeat center center;
     background-size: 80%;
 }
+.blockColor{
+    background: #ccc;
+}
 /*失误的方块*/
 .miss{
     background: #fff url("./../images/miss3.gif") no-repeat center center;
     background-size: 100%;
 }
+ /*音效选择*/
+  .checkMusic{
+      width: 100%;
+      height:5%;
+      position: absolute;
+      left: 50%;
+      bottom:300px;
+      transform: translateX(-50%);
+      display: none;
+      justify-content:space-around;
+}
+.checkMusic span{
+    display: inline-block;
+    width: 35%;
+    height: 100%;
+    border: 10px solid #ccc;
+    text-align: center;
+    font-size: 65px;
+    border-radius: 30px;
+    color: #666;
+    font-weight: bold;
+}
 
+/*模式选择*/
+.checkModel{
+    width: 100%;
+    height:5%;
+    position: absolute;
+    left: 50%;
+    bottom:300px;
+    transform: translateX(-50%);
+    display: none;
+    justify-content:space-around;
+
+}
+.checkModel span{
+    display: inline-block;
+    width: 35%;
+    height: 100%;
+    border: 10px solid #ccc;
+    text-align: center;
+    font-size: 65px;
+    border-radius: 30px;
+    color: #666;
+    font-weight: bold;
+}
  #text .textItems{
      position: absolute;
-     left:100%;
+     left: 0;
      top: 5%;
      width: 100%;
      height: 500px;
      z-index: 1200;
-     transition: left 3s linear 0ms;
+     display: none;
  }
 #text .textItems:nth-child(1){
-    background:url("../images/text/1.png") no-repeat;
+    background:url("../images/text/1.png") no-repeat center center;
 }
 #text .textItems:nth-child(2){
-    background:url("../images/text/2.png") no-repeat;
+    background:url("../images/text/2.png") no-repeat center center;
 }
 #text .textItems:nth-child(3){
-    background:url("../images/text/3.png") no-repeat;
+    background:url("../images/text/3.png") no-repeat center center;
 }
 #text .textItems:nth-child(4){
-    background:url("../images/text/4.png") no-repeat;
+    background:url("../images/text/4.png") no-repeat center center;
 }
 #text .textItems:nth-child(5){
-    background:url("../images/text/5.png") no-repeat;
+    background:url("../images/text/5.png") no-repeat center center;
 }
 #text .textItems:nth-child(6){
-    background:url("../images/text/6.png") no-repeat;
+    background:url("../images/text/6.png") no-repeat center center;
 }
 #text .textItems:nth-child(7){
-    background:url("../images/text/7.png") no-repeat;
+    background:url("../images/text/7.png") no-repeat center center;
 }
 #text .textItems:nth-child(8){
-    background:url("../images/text/8.png") no-repeat;
+    background:url("../images/text/8.png") no-repeat center center;
 }
 #text .textItems:nth-child(9){
-    background:url("../images/text/9.png") no-repeat;
+    background:url("../images/text/9.png") no-repeat center center;
 }
 #text .textItems:nth-child(10){
-    background:url("../images/text/10.png") no-repeat;
+    background:url("../images/text/10.png") no-repeat center center;
 }
 #text .textItems:nth-child(11){
-    background:url("../images/text/11.png") no-repeat
+    background:url("../images/text/11.png") no-repeat center center;
 }
 
 /*结算界面*/
@@ -206,4 +255,14 @@ body,html{
     box-shadow: 0 0 80px #000;
     text-shadow: 0 0 50px lightgoldenrodyellow;
     border: 10px solid #f80;
+}
+
+.mask{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
 }

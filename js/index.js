@@ -1,23 +1,17 @@
 $(function () {
     //开始游戏
     startGame();
+
     //绘制五组方块
     let $map = $(".map");
     for (let i = 0 ; i <= 4; i++){
         setBlock($map);
     }
-    //方块位置初始化
-    groupPosition();
+     //方块位置初始化
+      groupPosition();
 
-    //给要点击的方块设置引导手势
-    ($(".group").eq(3).children(".bgColor")).addClass("startBtn");
-
-    //底部方块组初始化
-    bottomStyle();
-
-    //方块点击检测
-    checkBlock($map);
 });
+//======================公共模块开始==========================
 
 //开始游戏
 function startGame() {
@@ -34,13 +28,80 @@ function startGame() {
             $(this).slideUp(300);
         })
     });
-    //点击开始按钮时隐藏开始界面 并随机播放一个音效
+
+    //点击开始按钮时隐藏开始界面 并弹出音效选择界面
     $(".start").click(function () {
-        //让开始界面下滑消失
-        $start.slideUp();
-        music();
-    })
+        $(this).fadeOut();
+        let $checkMusic = $(".checkMusic");
+        let $checkModel = $(".checkModel");
+        $checkModel.css("display","flex");
+        $checkModel.children().click(function () {
+            $(this).addClass("checkedModel");
+            $(this).parent().fadeOut();
+            $checkMusic.css("display","flex");
+        $checkMusic.children().click(function () {
+                $(this).addClass("checked");
+                //让开始界面下滑消失
+                $start.slideUp();
+                if ($checkMusic.children(".piano").hasClass("checked")){
+                    music();
+                }
+                else {
+                    musicTwo();
+                }
+                //模式检测
+            checkModel()
+            })
+        });
+    });
 }
+
+//模式选择
+function checkModel() {
+    let $map = $(".map");
+    //方块点击检测
+    if ($(".checkModel").children(".tradition").hasClass("checkedModel")){
+        ($(".group").eq(3).children(".bgColor")).addClass("startBtn");
+        //底部方块组初始化
+            checkBlock($map);
+            bottomStyle();
+}
+    else{
+        //给要点击的方块设置引导手势
+        ($(".group").eq(4).children(".bgColor")).addClass("startBtn");
+        $("body").on("click",".startBtn",function (){
+            groupPosition3();
+            setBlockTwo();
+        });
+        checkBlockTwo();
+    }
+}
+
+//钢琴音效
+function music() {
+    //找到所有音效 并设置一个0-6的随机数
+    let max = 6;
+    let min = 0;
+    let rand = parseInt(Math.random() * (max - min + 1) + min);
+    let $music = $("audio");
+    //找到一个随机音效
+    let currentMusic =$music.get(rand);
+    //播放随机音效(调用cloneNode()使音效可以叠加)
+    currentMusic.cloneNode().play();
+}
+
+//键盘音效
+function musicTwo() {
+    let $music = $("audio");
+    let currentMusic =$music.get(8);
+    currentMusic.cloneNode().play();
+
+}
+
+//======================公共模块结束==========================
+
+
+//========================经典模式开始========================
 
 //底部方块组初始化
 function bottomStyle() {
@@ -76,7 +137,7 @@ function setBlock($map) {
         let rand = parseInt(Math.random() * (max - min + 1) + min);
         let $thisBlock = $(".group").children().eq(rand);
         $thisBlock.addClass("bgColor");
-
+        $thisBlock.addClass("flag");
 }
 
 //方块组位置初始化
@@ -88,31 +149,6 @@ function groupPosition() {
     $group.eq(1).css("bottom","75%");
     $group.eq(0).css("bottom","100%");
 }
-
-//点击后更新方块组位置
-function groupPosition2() {
-    let $group = $(".group");
-    $group.eq(5).css("bottom","-25%");
-    $group.eq(4).css("bottom","0%");
-    $group.eq(3).css("bottom","25%");
-    $group.eq(2).css("bottom","50%");
-    $group.eq(1).css("bottom","75%");
-    $group.eq(0).css("bottom","100%");
-}
-
-//游戏音效
-function music() {
-    //找到所有音效 并设置一个0-6的随机数
-    let max = 6;
-    let min = 0;
-    let rand = parseInt(Math.random() * (max - min + 1) + min);
-    let $music = $("audio");
-    //找到一个随机音效
-    let currentMusic =$music.get(rand);
-    //播放随机音效(调用cloneNode()使音效可以叠加)
-    currentMusic.cloneNode().play();
-}
-
 //方块检测方法
 function checkBlock($map) {
     //设置初始分数
@@ -131,24 +167,33 @@ function checkBlock($map) {
 
         //方块颜色判定
         if ($(this).hasClass("bgColor") && $(this).parent().index() === 3 ){
-               //生成新的一组方块
-                setBlock($map);
-              // 初始化位置
-               groupPosition2();
+            //生成新的一组方块
+            setBlock($map);
+            // 初始化位置
+            groupPosition2();
 
             //点击事件发生时播放游戏音效
-            music();
+            let $checkMusic = $(".checkMusic");
+            //判断玩家选择的音效并播放
+            if ($checkMusic.children(".piano").hasClass("checked")){
+                music();
+            }
+            else {
+                musicTwo();
+            }
 
             //加分
             score += 1;
             //让方块随着分数的增高先变黄再变红后变蓝
+
             if(score < 110 ){
                 let $block = $(".group").children(".bgColor");
                 $block.css("background",`rgb(${score*2},${score*2},${0})`);
                 if (score === 50){
-                    $textItem.eq(0).css({
-                        left:"-100%"
-                    });
+                    $textItem.eq(0).fadeIn();
+                    setTimeout(function () {
+                        $textItem.eq(0).fadeOut();
+                    },2000)
                 }
             }
             else if (score >= 110 && score < 180) {
@@ -156,9 +201,10 @@ function checkBlock($map) {
                 num -= 2;
                 $block.css("background",`rgb(${score*2},${num},${0})`);
                 if (score === 150){
-                    $textItem.eq(1).css({
-                        left:"-100%"
-                    });
+                    $textItem.eq(1).fadeIn();
+                    setTimeout(function () {
+                        $textItem.eq(1).fadeOut()
+                    },2000)
                 }
             }
             else if (score >= 180 && score <= 280) {
@@ -168,16 +214,16 @@ function checkBlock($map) {
                 num4 -= 6;
                 $block.css("background",`rgb(${num4},${num3},${num2})`);
                 if (score === 265){
-                    $textItem.eq(3).css("left","33%");
+                    $textItem.eq(3).slideDown();
                     setTimeout(function () {
-                        $textItem.eq(4).css("left","16%");
                         $textItem.eq(3).slideUp();
+                        $textItem.eq(4).slideDown();
                         setTimeout(function () {
                             $textItem.eq(4).slideUp();
-                            $textItem.eq(5).css("left","43%");
+                            $textItem.eq(5).slideDown();
                             setTimeout(function () {
                                 $textItem.eq(5).slideUp();
-                                $textItem.eq(6).css("left","28%");
+                                $textItem.eq(6).fadeIn();
                                 setTimeout(function () {
                                     $textItem.eq(6).fadeOut();
                                 },8000)
@@ -189,17 +235,17 @@ function checkBlock($map) {
             //如果玩家分数超过280 则会开启彩虹模式
             else {
                 if (score === 450){
-                    $textItem.eq(7).css("left","23%");
+                    $textItem.eq(7).fadeIn();
                     setTimeout(function () {
                         $textItem.eq(7).fadeOut();
-                        $textItem.eq(8).css("left","35%");
+                        $textItem.eq(8).fadeIn();
                         setTimeout(function () {
                             $textItem.eq(8).fadeOut();
-                            $textItem.eq(9).css("left","40%");
+                            $textItem.eq(9).fadeIn();
                             setTimeout(function () {
                                 $textItem.eq(9).fadeOut();
                                 setTimeout(function () {
-                                    $textItem.eq(10).css("left","23%");
+                                    $textItem.eq(10).fadeIn();
                                     setTimeout(function () {
                                         $textItem.eq(10).fadeOut();
                                     },5000)
@@ -211,7 +257,7 @@ function checkBlock($map) {
                 //随机颜色
                 let max = 200;
                 let min = 0;
-                let maxIndex = 1;
+                let maxIndex = 0;
                 let minIndex = 3;
                 let randIndex = parseInt(Math.random() * (maxIndex - minIndex + 1) + minIndex);
                 let rand1 = parseInt(Math.random() * (max - min + 1) + min);
@@ -219,6 +265,7 @@ function checkBlock($map) {
                 let rand3 = parseInt(Math.random() * (max - min + 1) + min);
                 let $randBlock = $(".group").eq(randIndex).children(".bgColor");
                 $randBlock.css("background",`rgb(${rand1},${rand2},${rand3})`);
+                $(".map").css("background",`rgb(${rand1},${rand2},${rand3})`);
             }
 
             //设置被点击的方块变成灰色时添加盒子阴影 并让其所在的方块组下移25%
@@ -232,13 +279,19 @@ function checkBlock($map) {
                 $(".group").eq(5).remove();
             },500);
 
-         return score;
+            return score;
         }
+
         //设置无法点击非第三排的黑色方块和已经点过的方块(优化用户体验)
         else if (($(this).hasClass("bgColor") && $(this).parent().index() !== 3) || $(this).parent().index() === 4 ){
             return  false;
         }
         else {
+
+            $(".mask").show();
+            setTimeout(function () {
+            $(".mask").hide();
+            },800);
 
             //若点击了非黑色方块 则出现生气的小黑
             $(this).addClass("miss");
@@ -247,26 +300,43 @@ function checkBlock($map) {
             $(".map").css("boxShadow",`inset ${0} ${0} ${300}px lightgoldenrodyellow`);
 
             //播放游戏失误音效
-           let overMusic =  document.querySelector(".over");
-           overMusic.play();
+            let overMusic =  document.querySelector(".over");
+            let overMusicTwo =  document.querySelector(".musicTwoOver");
+            let $checkMusic = $(".checkMusic");
+            if ($checkMusic.children(".piano").hasClass("checked")){
+                overMusic.play();
+            }
+            else {
+                overMusicTwo.play()
+            }
 
-          //把最终得分添加到结束面板
-          $("#score").text(score);
+            //把最终得分添加到结束面板
+            $("#score").text(score);
 
             //延迟0.5s出现结算界面
             setTimeout(function () {
 
-              $("#over").slideDown();
+                $("#over").slideDown();
 
-              //重置分数
-              score = 0;
+                //重置分数
+                score = 0;
 
-          },500);
-
-          //放置重新开始函数 等待用户调用
-          restart();
+            },500);
+            //放置重新开始函数 等待用户调用
+            restart();
         }
     });
+}
+
+//点击后更新方块组位置
+function groupPosition2() {
+    let $group = $(".group");
+    $group.eq(5).css("bottom","-25%");
+    $group.eq(4).css("bottom","0%");
+    $group.eq(3).css("bottom","25%");
+    $group.eq(2).css("bottom","50%");
+    $group.eq(1).css("bottom","75%");
+    $group.eq(0).css("bottom","100%");
 }
 
 //重新开始
@@ -288,15 +358,11 @@ function restart() {
         }
         //去除地图内阴影
 
-        $map.css("boxShadow","none");
+        $map.css({boxShadow:"none",background:"#fff"});
 
         //漂浮文字位置归位
         let $textItems = $(".textItems");
         $textItems.hide();
-        $textItems.css("left","100%");
-        setTimeout(function () {
-            $textItems.show();
-        },8000);
 
         //初始化方块位置
         groupPosition();
@@ -309,11 +375,189 @@ function restart() {
     })
 }
 
+//========================经典模式结束========================
+
+//========================滚动模式开始========================
+
+let timer = null;
+let time = null;
+
+//滚动模式速度调节模块
+function groupPosition3() {
+    clearInterval(timer);
+    timer =setInterval(function () {
+        let $group = $(".group");
+        for (let i = 0; i < $group.length; i++) {
+            let bottom = parseFloat($group.eq(i).css("bottom"));
+            let height = $group.eq(i).height();
+            let step = height * 0.01;
+            bottom -= step;
+            $($group).eq(i).css("bottom",bottom +"px");
+        }
+    },5);
+}
+
+//滚动模式新建方块组方法
+function setBlockTwo() {
+    clearInterval(time);
+    time =setInterval(function () {
+        let $map = $(".map");
+        setBlock($map);
+        let $group = $(".group");
+        $group.eq(0).css("bottom","100%");
+    },500);
+}
+
+//滚动模式方块检测方法
+function checkBlockTwo() {
+   let myTime = null;
+    //设置初始分数
+    let score = 0;
+    //监测
+    $("body").on("click",".block",function (){
+        //关闭存在的定时器 防止叠加
+        clearInterval(myTime);
+        //删除以前设置过的标记用的类名
+        $(this).removeClass("flag");
+        //加分
+        score += 1;
+
+        //失误后的操作
+        function over() {
+
+            //关闭所有定时器
+            clearInterval(timer);
+            clearInterval(time);
+
+            //给地图加入淡黄色内阴影
+            $(".map").css("boxShadow",`inset ${0} ${0} ${300}px lightgoldenrodyellow`);
+
+            //把最终得分添加到结束面板
+            let currentScore = score;
+
+            $("#score").text(currentScore);
+
+            //延迟0.5s出现结算界面
+            setTimeout(function () {
+
+                $("#over").slideDown();
+
+                //重置分数
+                score = 0;
+
+            },500);
+
+            //提供重新开始函数,供玩家调用
+            restartTwo()
+        }
+
+        //判断超出地图
+        myTime = setInterval(function () {
+            let $group = $(".group");
+            let height = $group.height();
+            for (let i = 0; i < $group.length; i++) {
+                let bottom = parseFloat($group.eq(i).css("bottom"));
+                let flag = $($group).eq(i).children(".bgColor").hasClass("flag");
+                if (bottom < -height){
+                    if (flag){
+                        clearInterval(myTime);
+                        over();
+                        $(".mask").show();
+                        setTimeout(function () {
+                            $(".mask").hide();
+                        },800);
+                    }else {
+                        $($group).eq(i).remove();
+                    }
+                }
+            }
+        },100);
+
+       //判断点击失误
+      let flag =$(this).hasClass("bgColor");
+      if (!flag){
+
+          $(".mask").show();
+          setTimeout(function () {
+              $(".mask").hide();
+          },800);
+
+          //若点击了非黑色方块 则出现生气的小黑
+          $(this).addClass("miss");
+           over();
+          //播放游戏失误音效
+          let overMusic =  document.querySelector(".over");
+          let overMusicTwo =  document.querySelector(".musicTwoOver");
+          let $checkMusic = $(".checkMusic");
+          if ($checkMusic.children(".piano").hasClass("checked")){
+              overMusic.play();
+          }
+          else {
+              overMusicTwo.play()
+          }
+
+      }else{
+
+          //给当前点击的方块添加类名让其边城灰色
+          $(this).css({backgroundColor: "#ccc"});
+
+          //点击事件发生时播放游戏音效
+          let $checkMusic = $(".checkMusic");
+          //判断玩家选择的音效并播放
+          if ($checkMusic.children(".piano").hasClass("checked")){
+              music();
+          }
+          else {
+              musicTwo();
+          }
+
+      }
+    });
+
+}
+
+//滚动模式重新开始
+function restartTwo() {
+    $(".restart").click(function () {
+        //找到所有存在的方块组
+        let $group = $(".group");
+
+        //删除存在的方块组
+        $group.remove();
+
+        //关闭结束界面
+        $("#over").slideUp();
+
+        //重新绘制方块
+        let $map = $(".map");
+        for (let i = 0 ; i <= 4; i++){
+            setBlock($map);
+        }
+        //去除地图内阴影
+
+        $map.css({boxShadow:"none",background:"#fff"});
+
+        //漂浮文字位置归位
+        let $textItems = $(".textItems");
+        $textItems.hide();
+
+        //初始化方块位置
+        groupPosition();
+
+        //给要点击的方块设置引导手势
+        ($(".group").eq(4).children(".bgColor")).addClass("startBtn");
+
+    })
+}
+
+//========================滚动模式结束========================
+
+
 //联系方式
 (function () {
     console.log("作者:Mr.朱");
     console.log("qq:1136116938");
     console.log("GitHub地址:https://github.com/webdog369");
     console.log("本作品图片,音频素材来源于网络,非商用");
-    console.log("版本号:v1.0");
+    console.log("版本号:v2.1");
 })();

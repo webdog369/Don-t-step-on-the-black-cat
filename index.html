@@ -12,9 +12,19 @@
 <!--开始界面-->
 <div id="start">
     <h1><img src="images/title2.png" alt=""></h1>
-    <span class="start">开始</span>
+    <span class="start">选择模式</span>
     <div class="help"></div>
     <i class="helpBtn"></i>
+      <!--模式选择-->
+    <div class="checkModel">
+        <span class="tradition">经典模式</span>
+        <span class="roll">滚动模式</span>
+    </div>
+    <!--音效选择-->
+    <div class="checkMusic">
+        <span class="piano">钢琴音效</span>
+        <span class="keyboard">键盘音效</span>
+    </div>
 </div>
 
 <!--地图-->
@@ -29,6 +39,9 @@
 <audio src="media/6.ogg"></audio>
 <audio src="media/7.ogg"></audio>
 <audio src="media/over2.ogg" class="over"></audio>
+<audio src="media/2-1.ogg" class="musicTwo"></audio>
+<audio src="media/over3.ogg" class="musicTwoOver"></audio>
+
 
 <!--漂浮文字区域-->
 <div id="text">
@@ -51,6 +64,8 @@
     <span id="score"></span>
     <div class="restart">重新开始</div>
 </div>
+
+<div class="mask"></div>
 
 </body>
 </html>
