@@ -17,8 +17,8 @@
     <i class="helpBtn"></i>
       <!--模式选择-->
     <div class="checkModel">
-        <span class="tradition">经典模式</span>
-        <span class="roll">滚动模式</span>
+        <span class="tradition">刻不容缓</span>
+        <span class="roll">无尽闪电</span>
     </div>
     <!--音效选择-->
     <div class="checkMusic">
@@ -29,7 +29,12 @@
 
 <!--地图-->
 <div class="map"></div>
+<!--时间条-->
+<div class="time"></div>
+<div class="clock"></div>
 
+<!--滚动模式遮挡条-->
+<div class="rollerMask"></div>
 <!--游戏音效-->
 <audio src="media/1.ogg"></audio>
 <audio src="media/2.ogg"></audio>
@@ -41,10 +46,15 @@
 <audio src="media/over2.ogg" class="over"></audio>
 <audio src="media/2-1.ogg" class="musicTwo"></audio>
 <audio src="media/over3.ogg" class="musicTwoOver"></audio>
+<audio src="media/reTime.ogg" class="reTime"></audio>
+<audio src="media/clock.ogg" class="TimeClock"></audio>
+<audio src="media/timeover.ogg" class="timeOver"></audio>
+<audio src="media/lightning.ogg" class="lightning"></audio>
 
 
 <!--漂浮文字区域-->
 <div id="text">
+    <div class="textItems"></div>
     <div class="textItems"></div>
     <div class="textItems"></div>
     <div class="textItems"></div>
@@ -63,6 +73,7 @@
     <p>取得分数</p>
     <span id="score"></span>
     <div class="restart">重新开始</div>
+    <div class="return"><a href="">返回主页</a></div>
 </div>
 
 <div class="mask"></div>
